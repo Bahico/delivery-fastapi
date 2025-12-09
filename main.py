@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from requests import post
 from fastapi import FastAPI
 from models import User
@@ -6,12 +7,14 @@ from tortoise.contrib.fastapi import register_tortoise
 
 app = FastAPI()
 
+class DataModel(BaseModel):
+    last_name: str
 
 @app.post("/user/{telegram_id}")
-async def get_user(telegram_id: str, data):
+async def get_user(telegram_id: str, data: DataModel):
     user = await User.get_or_none(telegram_id=telegram_id)
     if not user:
-        return post(f'http://95.182.118.221:8001/detail/{telegram_id}', data=data).json()
+        return post(f'http://95.182.118.221:8001/detail/{telegram_id}', json=data).json()
 
     return {
         "id": user.id,
