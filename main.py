@@ -18,9 +18,12 @@ async def get_user(telegram_id: str, data: DataModel):
 
     return {
         "id": user.id,
-        "tg_id": user.telegram_id,
+        "chat_id": user.chat_id,
         "full_name": user.last_name,
         "username": user.username,
+        "type": user.type,
+        "step": user.step,
+        "step_under": user.step_under,
     }
 
 
