@@ -11,7 +11,8 @@ app = FastAPI()
 class DataModel(BaseModel):
     id: Optional[int] = None
     last_name: str
-    type: int
+    type: Optional[int] = None
+    telegram_id: Optional[int] = None
     username: Optional[str] = None
     chat_id: Optional[int] = None
     step: Optional[int] = None
@@ -19,6 +20,7 @@ class DataModel(BaseModel):
 
 @app.post("/user/{telegram_id}")
 async def get_user(telegram_id: str, data: DataModel):
+    print(telegram_id)
     user = await User.get_or_none(telegram_id=telegram_id)
     if not user:
         print(data.json())
