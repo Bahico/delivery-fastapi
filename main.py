@@ -20,7 +20,6 @@ class DataModel(BaseModel):
 
 @app.post("/user/{telegram_id}")
 async def get_user(telegram_id: str, data: DataModel):
-    print(telegram_id)
     user = await User.get_or_none(telegram_id=telegram_id)
     if not user:
         print(data.json())
