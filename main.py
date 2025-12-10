@@ -4,17 +4,25 @@ from fastapi import FastAPI
 from models import User
 from config import DATABASE_URL
 from tortoise.contrib.fastapi import register_tortoise
+from typing import Optional
 
 app = FastAPI()
 
 class DataModel(BaseModel):
+    id: Optional[int] = None
     last_name: str
+    type: int
+    username: Optional[str] = None
+    chat_id: Optional[int] = None
+    step: Optional[int] = None
+    step_under: Optional[int] = None
 
 @app.post("/user/{telegram_id}")
 async def get_user(telegram_id: str, data: DataModel):
     user = await User.get_or_none(telegram_id=telegram_id)
     if not user:
-        return post(f'http://95.182.118.221:8001/detail/{telegram_id}', json=data).json()
+        print(data.json())
+        return post(f'http://95.182.118.221:8000/user/detail/{telegram_id}/', data=data.json(), headers={'Content-type': 'application/json'}).json()
 
     return {
         "id": user.id,
