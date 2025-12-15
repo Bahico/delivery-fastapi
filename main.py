@@ -10,7 +10,7 @@ app = FastAPI()
 
 class DataModel(BaseModel):
     id: Optional[int] = None
-    last_name: str
+    last_name: Optional[str] = None
     type: Optional[int] = None
     telegram_id: Optional[int] = None
     username: Optional[str] = None
