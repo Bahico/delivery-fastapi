@@ -21,7 +21,7 @@ class DataModel(BaseModel):
 @app.post("/user/{telegram_id}")
 async def get_user(telegram_id: str, data: DataModel):
     user = await User.get_or_none(telegram_id=telegram_id)
-    if not user:
+    if not user or not user.chat_id:
         print(data.json())
         return post(f'http://95.182.118.221:8000/user/detail/{telegram_id}/', data=data.json(), headers={'Content-type': 'application/json'}).json()
 
